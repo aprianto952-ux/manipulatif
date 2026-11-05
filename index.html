@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petualangan Gerak Manipulatif - SDN 004 Singkep</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            orange: '#FF7043',
+                            yellow: '#FFCA28',
+                            green: '#66BB6A',
+                            blue: '#42A5F5',
+                            purple: '#AB47BC',
+                            pink: '#EC407A',
+                            bg: '#FFFDE7'
+                        }
+                    },
+                    fontFamily: {
+                        fredoka: ['Fredoka', 'sans-serif'],
+                        quicksand: ['Quicksand', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: #FFF8E1;
+            background-image: radial-gradient(#FFE082 10%, transparent 11%);
+            background-size: 20px 20px;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        h1, h2, h3, h4, .font-title {
+            font-family: 'Fredoka', cursive;
+        }
+        .btn-bounce:active {
+            transform: scale(0.95);
+        }
+        .card-shadow {
+            box-shadow: 0 8px 0px rgba(0,0,0,0.15);
+        }
+        .card-shadow-sm {
+            box-shadow: 0 4px 0px rgba(0,0,0,0.12);
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FFF9C4;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #FFB74D;
+            border-radius: 4px;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-slate-800 flex flex-col justify-between">
+
+    <!-- HEADER / NAVIGATION BAR -->
+    <header id="main-header" class="bg-gradient-to-r from-orange-400 via-amber-400 to-yellow-400 p-3 md:p-4 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="showPage('page-welcome')">
+                <div class="bg-white p-2 rounded-full text-orange-500 shadow-md animate-bounce">
+                    <i class="fa-solid fa-futbol text-2xl md:text-3xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold tracking-wide drop-shadow-md">PETUALANGAN GERAK</h1>
+                    <p class="text-xs md:text-sm font-semibold text-orange-900 opacity-90">SDN 004 SINGKEP • PJOK KELAS 1</p>
+                </div>
+            </div>
+
+            <!-- Student Info Badge & Home Button -->
+            <div class="flex items-center space-x-2">
+                <div id="user-badge" class="hidden bg-white/90 backdrop-blur text-slate-800 px-3 py-1 rounded-full text-xs md:text-sm font-bold shadow items-center space-x-2 border-2 border-orange-300">
+                    <i class="fa-solid fa-user-ninja text-orange-500"></i>
+                    <span id="badge-name">Siswa</span>
+                    <span class="bg-orange-500 text-white px-2 py-0.5 rounded-full text-[10px]" id="badge-class">1A</span>
+                </div>
+                <button onclick="showPage('page-menu')" id="btn-nav-menu" class="hidden bg-amber-600 hover:bg-amber-700 text-white font-bold px-3 py-1.5 rounded-xl text-sm shadow transition flex items-center space-x-1">
+                    <i class="fa-solid fa-grid-2 text-lg"></i>
+                    <span class="hidden md:inline">Menu Utama</span>
+                </button>
+                <button onclick="showPage('page-config')" class="bg-white/30 hover:bg-white/50 text-white p-2 rounded-xl text-sm transition">
+                    <i class="fa-solid fa-gear"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER FOR PAGES -->
+    <main class="max-w-5xl mx-auto w-full p-3 md:p-6 flex-grow">
+
+        <!-- ================= 1. HALAMAN PEMBUKA ================= -->
+        <section id="page-welcome" class="page-content space-y-6 text-center py-4">
+            <div class="bg-white rounded-3xl p-6 md:p-10 card-shadow border-4 border-amber-300 relative overflow-hidden">
+                <div class="absolute -top-10 -right-10 w-32 h-32 bg-amber-100 rounded-full blur-2xl"></div>
+                <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-orange-100 rounded-full blur-2xl"></div>
+
+                <div class="inline-block bg-orange-100 text-orange-700 px-4 py-1.5 rounded-full font-bold text-sm mb-4 border border-orange-300">
+                    <i class="fa-solid fa-school mr-1"></i> SDN 004 SINGKEP
+                </div>
+
+                <h1 class="text-3xl md:text-5xl font-extrabold text-orange-600 mb-3 tracking-wide leading-tight">
+                    PETUALANGAN GERAK MANIPULATIF
+                </h1>
+                <p class="text-slate-600 text-base md:text-lg max-w-2xl mx-auto font-semibold mb-6">
+                    Mari Belajar Melempar, Menangkap, Menendang & Bermain Bola dengan Ceria dan Gembira!
+                </p>
+
+                <!-- Cartoon SVG Illustration -->
+                <div class="my-6 flex justify-center items-center">
+                    <svg class="w-48 h-48 md:w-64 md:h-64 animate-float" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="100" cy="100" r="90" fill="#FFE082"/>
+                        <!-- Kid Character -->
+                        <circle cx="100" cy="75" r="35" fill="#FFCC80"/>
+                        <circle cx="88" cy="70" r="4" fill="#3E2723"/>
+                        <circle cx="112" cy="70" r="4" fill="#3E2723"/>
+                        <path d="M 90 85 Q 100 95 110 85" stroke="#3E2723" stroke-width="4" stroke-linecap="round"/>
+                        <!-- Cap -->
+                        <path d="M 60 70 C 60 45 140 45 140 70 Z" fill="#FF7043"/>
+                        <path d="M 120 65 L 155 70" stroke="#FF7043" stroke-width="6" stroke-linecap="round"/>
+                        <!-- Shirt -->
+                        <path d="M 65 110 L 135 110 L 125 160 L 75 160 Z" fill="#42A5F5"/>
+                        <!-- Ball -->
+                        <circle cx="145" cy="130" r="22" fill="#E53935"/>
+                        <path d="M 130 130 Q 145 115 160 130" stroke="white" stroke-width="3"/>
+                        <path d="M 130 130 Q 145 145 160 130" stroke="white" stroke-width="3"/>
+                    </svg>
+                </div>
+
+                <!-- Form Identitas Siswa -->
+                <div class="max-w-md mx-auto bg-amber-50 p-5 rounded-2xl border-2 border-amber-200 space-y-4 shadow-inner">
+                    <h3 class="font-bold text-amber-900 text-lg flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-id-card"></i> Isi Identitas Dulu Ya!
+                    </h3>
+                    <div class="text-left">
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Nama Lengkap Siswa:</label>
+                        <input type="text" id="input-nama" placeholder="Tulis namamu di sini..." class="w-full px-4 py-2.5 rounded-xl border-2 border-amber-300 focus:border-orange-500 focus:outline-none text-base font-bold text-slate-800">
+                    </div>
+                    <div class="text-left">
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Kelas:</label>
+                        <select id="input-kelas" class="w-full px-4 py-2.5 rounded-xl border-2 border-amber-300 focus:border-orange-500 focus:outline-none text-base font-bold text-slate-800 bg-white">
+                            <option value="1A">Kelas 1A</option>
+                            <option value="1B">Kelas 1B</option>
+                            <option value="1C">Kelas 1C</option>
+                        </select>
+                    </div>
+                    <button onclick="startLearning()" class="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-extrabold text-xl py-3.5 px-6 rounded-2xl card-shadow-sm transition transform active:scale-95 flex items-center justify-center space-x-2">
+                        <span>MULAI BELAJAR</span>
+                        <i class="fa-solid fa-circle-play text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= MENU UTAMA (DASHBOARD) ================= -->
+        <section id="page-menu" class="page-content hidden space-y-6">
+            <div class="bg-gradient-to-r from-orange-400 to-amber-400 rounded-3xl p-6 text-white card-shadow flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="text-center md:text-left">
+                    <h2 class="text-2xl md:text-3xl font-extrabold mb-1">Halo, <span id="welcome-student-name">Teman Kecil</span>! 👋</h2>
+                    <p class="text-amber-100 text-sm md:text-base">Pilih petualangan serumu hari ini!</p>
+                </div>
+                <div class="flex items-center space-x-2 bg-white/20 backdrop-blur px-4 py-2 rounded-2xl border border-white/40">
+                    <i class="fa-solid fa-trophy text-yellow-300 text-2xl"></i>
+                    <div>
+                        <div class="text-[10px] uppercase font-bold tracking-wider">Total Bintang</div>
+                        <div class="text-xl font-black text-yellow-300" id="total-stars-display">⭐ 0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid Menu Navigasi Modul -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+
+                <!-- 1. Tujuan Pembelajaran -->
+                <div onclick="showPage('page-tujuan')" class="bg-white rounded-2xl p-4 text-center card-shadow hover:scale-105 transition cursor-pointer border-2 border-blue-200 group">
+                    <div class="w-16 h-16 bg-blue-100 text-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-3 group-hover:bg-blue-500 group-hover:text-white transition">
+                        <i class="fa-solid fa-bullseye text-3xl"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-800 text-sm md:text-base mb-1">Tujuan Belajar</h3>
+                    <p class="text-[11px] text-slate-500">Apa yang akan dipelajari</p>
+                </div>
+
+                <!-- 2. Materi Pembelajaran -->
+                <div onclick="showPage('page-materi')" class="bg-white rounded-2xl p-4 text-center card-shadow hover:scale-105 transition cursor-pointer border-2 border-emerald-200 group">
+                    <div class="w-16 h-16 bg-emerald-100 text-emerald-500 rounded-2xl flex items-center justify-center mx-auto mb-3 group-hover:bg-emerald-500 group-hover:text-white transition">
+                        <i class="fa-solid fa-book-open-reader text-3xl"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-800 text-sm md:text-base mb-1">Materi Gerak</h3>
+                    <p class="text-[11px] text-slate-500">6 Macam gerak manipulatif</p>
+                </div>
+
+                <!-- 3. Video Demonstrasi -->
+                <div onclick="showPage('page-video')" class="bg-white rounded-2xl p-4 text-center card-shadow hover:scale-105 transition cursor-pointer border-2 border-purple-200 group">
+                    <div class="w-16 h-16 bg-purple-100 text-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-3 group-hover:bg-purple-500 group-hover:text-white transition">
+                        <i class="fa-solid fa-film text-3xl"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-800 text-sm md:text-base mb-1">Video Gerakan</h3>
+                    <p class="text-[11px] text-slate-500">Lihat contoh gerakan</p>
+                </div>
+
+                <!-- 4. Game Edukasi -->
+                <div onclick="showPage('page-game')" class="bg-white rounded-2xl p-4 text-center card-shadow hover:scale-105 transition cursor-pointer border-2 border-pink-200 group">
+                    <div class="w-16 h-16 bg-pink-100 text-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-3 group-hover:bg-pink-500 group-hover:text-white transition">
+                        <i class="fa-solid fa-gamepad text-3xl"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-800 text-sm md:text-base mb-1">Game Seru</h3>
+                    <p class="text-[11px] text-slate-500">Main & kumpulkan bintang</p>
+                </div>
+
+                <!-- 5. Praktik Gerak -->
+                <div onclick="showPage('page-praktik')" class="bg-white rounded-2xl p-4 text-center card-shadow hover:scale-105 transition cursor-pointer border-2 border-amber-200 group">
+                    <div class="w-16 h-16 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center mx-auto mb-3 group-hover:bg-amber-500 group-hover:text-white transition">
+                        <i class="fa-solid fa-child-reaching text-3xl"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-800 text-sm md:text-base mb-1">Praktik Gerak</h3>
+                    <p class="text-[11px] text-slate-500">Misi latihan fisik</p>
+                </div>
+
+                <!-- 6. Kuis / Evaluasi -->
+                <div onclick="showPage('page-evaluasi')" class="bg-white rounded-2xl p-4 text-center card-shadow hover:scale-105 transition cursor-pointer border-2 border-red-200 group">
+                    <div class="w-16 h-16 bg-red-100 text-red-500 rounded-2xl flex items-center justify-center mx-auto mb-3 group-hover:bg-red-500 group-hover:text-white transition">
+                        <i class="fa-solid fa-pen-to-square text-3xl"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-800 text-sm md:text-base mb-1">Evaluasi / Kuis</h3>
+                    <p class="text-[11px] text-slate-500">Uji kemampuanmu</p>
+                </div>
+
+                <!-- 7. Refleksi Belajar -->
+                <div onclick="showPage('page-refleksi')" class="bg-white rounded-2xl p-4 text-center card-shadow hover:scale-105 transition cursor-pointer border-2 border-teal-200 group">
+                    <div class="w-16 h-16 bg-teal-100 text-teal-500 rounded-2xl flex items-center justify-center mx-auto mb-3 group-hover:bg-teal-500 group-hover:text-white transition">
+                        <i class="fa-solid fa-face-smile text-3xl"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-800 text-sm md:text-base mb-1">Refleksi Diri</h3>
+                    <p class="text-[11px] text-slate-500">Perasaan belajar hari ini</p>
+                </div>
+
+                <!-- 8. Penilaian Guru -->
+                <div onclick="showPage('page-guru')" class="bg-white rounded-2xl p-4 text-center card-shadow hover:scale-105 transition cursor-pointer border-2 border-indigo-200 group">
+                    <div class="w-16 h-16 bg-indigo-100 text-indigo-500 rounded-2xl flex items-center justify-center mx-auto mb-3 group-hover:bg-indigo-500 group-hover:text-white transition">
+                        <i class="fa-solid fa-clipboard-user text-3xl"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-800 text-sm md:text-base mb-1">Penilaian Guru</h3>
+                    <p class="text-[11px] text-slate-500">Khusus Guru / Rekap Data</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 2. TUJUAN PEMBELAJARAN ================= -->
+        <section id="page-tujuan" class="page-content hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 card-shadow border-2 border-blue-200 space-y-6">
+                <div class="flex items-center space-x-3 border-b border-slate-100 pb-4">
+                    <div class="bg-blue-500 text-white p-3 rounded-2xl">
+                        <i class="fa-solid fa-bullseye text-2xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-800">Tujuan Pembelajaran</h2>
+                        <p class="text-xs text-slate-500">Fase A Kelas 1 SD - SDN 004 Singkep</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Target 1 -->
+                    <div class="bg-blue-50 p-4 rounded-2xl border border-blue-200 flex items-start space-x-3">
+                        <span class="bg-blue-500 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">1</span>
+                        <p class="text-slate-700 text-sm font-semibold">Peserta didik mengenal dan memahami arti **Gerak Manipulatif** (gerakan menggunakan benda/objek).</p>
+                    </div>
+
+                    <!-- Target 2 -->
+                    <div class="bg-emerald-50 p-4 rounded-2xl border border-emerald-200 flex items-start space-x-3">
+                        <span class="bg-emerald-500 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">2</span>
+                        <p class="text-slate-700 text-sm font-semibold">Peserta didik mengenal 6 jenis gerakan manipulatif: **melempar, menangkap, menendang, menggelindingkan, memukul, dan memantulkan bola**.</p>
+                    </div>
+
+                    <!-- Target 3 -->
+                    <div class="bg-purple-50 p-4 rounded-2xl border border-purple-200 flex items-start space-x-3">
+                        <span class="bg-purple-500 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">3</span>
+                        <p class="text-slate-700 text-sm font-semibold">Peserta didik mampu mempraktikkan gerakan melempar, menangkap, dan menendang bola dengan santun dan aman.</p>
+                    </div>
+
+                    <!-- Target 4 -->
+                    <div class="bg-amber-50 p-4 rounded-2xl border border-amber-200 flex items-start space-x-3">
+                        <span class="bg-amber-500 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">4</span>
+                        <p class="text-slate-700 text-sm font-semibold">Peserta didik menunjukkan sikap **disiplin, percaya diri, jujur, dan bekerja sama** saat berolahraga.</p>
+                    </div>
+                </div>
+
+                <!-- Concept Note (Deep Learning) -->
+                <div class="bg-orange-100 p-4 rounded-2xl border-2 border-orange-300">
+                    <h4 class="font-bold text-orange-900 text-sm flex items-center gap-2 mb-1">
+                        <i class="fa-solid fa-lightbulb"></i> Tahukah Kamu? (Apa itu Gerak Manipulatif?)
+                    </h4>
+                    <p class="text-xs text-orange-800 leading-relaxed">
+                        **Gerak Manipulatif** adalah semua gerakan olahraga yang dilakukan dengan **menggunakan benda atau objek**, seperti bola, raket, atau pemukul.
+                    </p>
+                </div>
+
+                <div class="text-center pt-2">
+                    <button onclick="showPage('page-materi')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold px-6 py-3 rounded-2xl card-shadow-sm transition">
+                        Lanjut Ke Materi Pembelajaran <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 3. MATERI PEMBELAJARAN ================= -->
+        <section id="page-materi" class="page-content hidden space-y-6">
+            <div class="bg-white rounded-3xl p-5 md:p-6 card-shadow border-2 border-emerald-200 space-y-6">
+                
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b pb-4 border-slate-100">
+                    <div class="flex items-center space-x-3">
+                        <div class="bg-emerald-500 text-white p-3 rounded-2xl">
+                            <i class="fa-solid fa-book-open-reader text-2xl"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-xl md:text-2xl font-bold text-slate-800">Materi Gerak Manipulatif</h2>
+                            <p class="text-xs text-slate-500">Pilih gerakan di bawah ini untuk dipelajari!</p>
+                        </div>
+                    </div>
+
+                    <!-- Material Navigation Tabs -->
+                    <div class="flex space-x-1 overflow-x-auto pb-1 md:pb-0 scrollbar-none" id="materi-tabs">
+                        <button onclick="switchMateri(0)" class="tab-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-500 text-white">1. Melempar</button>
+                        <button onclick="switchMateri(1)" class="tab-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-600">2. Menangkap</button>
+                        <button onclick="switchMateri(2)" class="tab-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-600">3. Menendang</button>
+                        <button onclick="switchMateri(3)" class="tab-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-600">4. Gelinding</button>
+                        <button onclick="switchMateri(4)" class="tab-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-600">5. Memukul</button>
+                        <button onclick="switchMateri(5)" class="tab-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-600">6. Memantulkan</button>
+                    </div>
+                </div>
+
+                <!-- Dynamic Material Display Area -->
+                <div id="materi-display-container" class="space-y-6">
+                    <!-- Populated by JavaScript -->
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= 4. MENU VIDEO / DEMONSTRASI ================= -->
+        <section id="page-video" class="page-content hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 card-shadow border-2 border-purple-200 space-y-6">
+                <div class="flex items-center space-x-3 border-b border-slate-100 pb-4">
+                    <div class="bg-purple-500 text-white p-3 rounded-2xl">
+                        <i class="fa-solid fa-film text-2xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-800">Demonstrasi Gerak</h2>
+                        <p class="text-xs text-slate-500">Amati cara melakukan gerakan manipulatif dengan benar!</p>
+                    </div>
+                </div>
+
+                <!-- Video Selection List -->
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
+                    <button onclick="loadDemoVideo('melempar')" class="p-2.5 rounded-xl border-2 border-purple-200 bg-purple-50 text-purple-900 font-bold text-xs md:text-sm hover:bg-purple-500 hover:text-white transition flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-play-circle"></i>
+                        <span>1. Melempar Bola</span>
+                    </button>
+                    <button onclick="loadDemoVideo('menangkap')" class="p-2.5 rounded-xl border-2 border-purple-200 bg-purple-50 text-purple-900 font-bold text-xs md:text-sm hover:bg-purple-500 hover:text-white transition flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-play-circle"></i>
+                        <span>2. Menangkap Bola</span>
+                    </button>
+                    <button onclick="loadDemoVideo('menendang')" class="p-2.5 rounded-xl border-2 border-purple-200 bg-purple-50 text-purple-900 font-bold text-xs md:text-sm hover:bg-purple-500 hover:text-white transition flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-play-circle"></i>
+                        <span>3. Menendang Bola</span>
+                    </button>
+                </div>
+
+                <!-- Interactive Canvas Simulation Player -->
+                <div class="bg-slate-900 rounded-3xl overflow-hidden shadow-xl border-4 border-purple-300 relative">
+                    <div class="p-3 bg-slate-800 text-white text-xs font-bold flex justify-between items-center">
+                        <span id="demo-video-title"><i class="fa-solid fa-video text-purple-400 mr-2"></i> Animasi Demonstrasi: Melempar Bola</span>
+                        <span class="bg-purple-600 px-2 py-0.5 rounded text-[10px]">Canvas Animated Simulation</span>
+                    </div>
+
+                    <!-- Canvas Area -->
+                    <div class="w-full h-64 md:h-80 bg-gradient-to-b from-sky-300 to-emerald-200 flex items-center justify-center relative overflow-hidden">
+                        <canvas id="demo-canvas" width="600" height="320" class="w-full h-full object-contain"></canvas>
+                    </div>
+
+                    <!-- Playback Controls -->
+                    <div class="p-4 bg-slate-800 flex items-center justify-center space-x-4">
+                        <button onclick="playCanvasDemo()" class="bg-emerald-500 hover:bg-emerald-600 text-white px-5 py-2 rounded-xl font-bold text-sm flex items-center space-x-2 transition">
+                            <i class="fa-solid fa-play"></i> <span>Putar</span>
+                        </button>
+                        <button onclick="pauseCanvasDemo()" class="bg-amber-500 hover:bg-amber-600 text-white px-5 py-2 rounded-xl font-bold text-sm flex items-center space-x-2 transition">
+                            <i class="fa-solid fa-pause"></i> <span>Jeda</span>
+                        </button>
+                        <button onclick="resetCanvasDemo()" class="bg-slate-600 hover:bg-slate-700 text-white px-5 py-2 rounded-xl font-bold text-sm flex items-center space-x-2 transition">
+                            <i class="fa-solid fa-rotate-right"></i> <span>Ulangi</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-purple-50 p-4 rounded-2xl border border-purple-200 text-xs text-purple-900 space-y-1">
+                    <p class="font-bold"><i class="fa-solid fa-circle-info"></i> Petunjuk Pengamatan:</p>
+                    <p>• Perhatikan posisi tangan, kaki, serta arah mata saat melakukan gerakan.</p>
+                    <p>• Lakukan tiruan gerakan secara perlahan tanpa bola terlebih dahulu (*Shadow Practice*).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 5. MENU PERMAINAN INTERAKTIF ================= -->
+        <section id="page-game" class="page-content hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 card-shadow border-2 border-pink-200 space-y-6">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="bg-pink-500 text-white p-3 rounded-2xl">
+                            <i class="fa-solid fa-gamepad text-2xl"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-bold text-slate-800">Game Edukasi</h2>
+                            <p class="text-xs text-slate-500">Tebak Nama Gerakan Manipulatif!</p>
+                        </div>
+                    </div>
+                    <div class="bg-pink-100 text-pink-700 px-3 py-1 rounded-full text-xs font-bold">
+                        Skor Game: <span id="game-score">0</span> 🌟
+                    </div>
+                </div>
+
+                <!-- Game Container -->
+                <div id="game-container" class="bg-gradient-to-b from-pink-50 to-amber-50 p-6 rounded-3xl border-2 border-pink-200 text-center space-y-6">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 6. MENU PRAKTIK GERAK ================= -->
+        <section id="page-praktik" class="page-content hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 card-shadow border-2 border-amber-200 space-y-6">
+                <div class="flex items-center space-x-3 border-b border-slate-100 pb-4">
+                    <div class="bg-amber-500 text-white p-3 rounded-2xl">
+                        <i class="fa-solid fa-child-reaching text-2xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-800">Petunjuk Praktik Gerak</h2>
+                        <p class="text-xs text-slate-500">Misi Aktivitas Fisik Lapangan / Di Rumah</p>
+                    </div>
+                </div>
+
+                <!-- Safety Protocol Banner -->
+                <div class="bg-red-50 border-2 border-red-300 p-4 rounded-2xl flex items-start space-x-3">
+                    <i class="fa-solid fa-triangle-exclamation text-red-500 text-2xl mt-0.5"></i>
+                    <div class="text-xs text-red-900 space-y-1">
+                        <h4 class="font-bold text-sm">PETUNJUK KESELAMATAN (SAFETY FIRST):</h4>
+                        <p>1. Lakukan pemanasan otot tangan dan kaki sebelum memulai permainan.</p>
+                        <p>2. Pastikan area bermain aman dari benda tajam atau kaca.</p>
+                        <p>3. Pakailah sepatu olahraga dan pakaian olahraga yang nyaman.</p>
+                        <p>4. Selalu ikuti petunjuk dan instruksi dari Pak/Bu Guru PJOK!</p>
+                    </div>
+                </div>
+
+                <!-- Praktik Missions -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Misi 1 -->
+                    <div class="bg-amber-50 p-4 rounded-2xl border border-amber-300 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="bg-amber-500 text-white text-xs font-bold px-2.5 py-1 rounded-lg">Misi 1</span>
+                            <i class="fa-solid fa-bullseye text-amber-600 text-xl"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-800 text-base">Lempar Bola Ke Sasaran Keranjang</h3>
+                        <p class="text-xs text-slate-600">Siapkan keranjang bekas/ember. Berdirilah sejauh 2 meter, lalu lemparkan bola kain/plastik ke dalam keranjang sebanyak 5 kali.</p>
+                    </div>
+
+                    <!-- Misi 2 -->
+                    <div class="bg-emerald-50 p-4 rounded-2xl border border-emerald-300 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="bg-emerald-500 text-white text-xs font-bold px-2.5 py-1 rounded-lg">Misi 2</span>
+                            <i class="fa-solid fa-people-holding text-emerald-600 text-xl"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-800 text-base">Tangkap Bola Bersama Teman</h3>
+                        <p class="text-xs text-slate-600">Berpasangan dengan temanmu. Lempar dan tangkap bola lambung secara bergantian tanpa membiarkan bola jatuh ke tanah!</p>
+                    </div>
+
+                    <!-- Misi 3 -->
+                    <div class="bg-blue-50 p-4 rounded-2xl border border-blue-300 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="bg-blue-500 text-white text-xs font-bold px-2.5 py-1 rounded-lg">Misi 3</span>
+                            <i class="fa-solid fa-futbol text-blue-600 text-xl"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-800 text-base">Tendang Bola Ke Gawang Mini</h3>
+                        <p class="text-xs text-slate-600">Buat gawang dari 2 botol plastik. Tendang bola menggunakan kaki bagian dalam agar bola masuk dengan tepat ke gawang!</p>
+                    </div>
+
+                    <!-- Misi 4 -->
+                    <div class="bg-purple-50 p-4 rounded-2xl border border-purple-300 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="bg-purple-500 text-white text-xs font-bold px-2.5 py-1 rounded-lg">Misi 4</span>
+                            <i class="fa-solid fa-bowling-ball text-purple-600 text-xl"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-800 text-base">Gelindingkan Bola Menuju Target</h3>
+                        <p class="text-xs text-slate-600">Gelindingkan bola menyusur lantai untuk menjatuhkan 3 botol plastik yang disusun berdiri (*Bowling Sederhana*).</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= 7. MENU EVALUASI (KUIS) ================= -->
+        <section id="page-evaluasi" class="page-content hidden space-y-6">
+            <div class="bg-white rounded-3xl p-5 md:p-8 card-shadow border-2 border-red-200 space-y-6">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="bg-red-500 text-white p-3 rounded-2xl">
+                            <i class="fa-solid fa-pen-to-square text-2xl"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-xl md:text-2xl font-bold text-slate-800">Evaluasi Pembelajaran</h2>
+                            <p class="text-xs text-slate-500">Jawab 10 Soal Bergambar di Bawah Ini!</p>
+                        </div>
+                    </div>
+                    <div id="quiz-progress-badge" class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-bold">
+                        Soal <span id="quiz-current-num">1</span> dari 10
+                    </div>
+                </div>
+
+                <!-- Active Quiz Box -->
+                <div id="quiz-box" class="space-y-6">
+                    <!-- Populated dynamically by JS -->
+                </div>
+
+                <!-- Quiz Result Screen (Hidden by Default) -->
+                <div id="quiz-result" class="hidden text-center space-y-6 py-6">
+                    <div class="w-24 h-24 bg-amber-100 text-amber-500 rounded-full flex items-center justify-center mx-auto text-5xl shadow-inner animate-bounce">
+                        🏆
+                    </div>
+                    <h3 class="text-3xl font-bold text-slate-800">Hebat! Kamu Selesai!</h3>
+                    
+                    <div class="max-w-md mx-auto bg-amber-50 p-6 rounded-3xl border-2 border-amber-300 space-y-3">
+                        <div class="text-sm font-bold text-slate-600">NILAI AKHIR EVALUASI:</div>
+                        <div class="text-6xl font-black text-orange-500" id="final-score-val">100</div>
+                        
+                        <div class="grid grid-cols-2 gap-3 pt-3 text-xs font-bold">
+                            <div class="bg-emerald-100 text-emerald-800 p-2 rounded-xl">
+                                Benar: <span id="correct-count">10</span> Soal
+                            </div>
+                            <div class="bg-red-100 text-red-800 p-2 rounded-xl">
+                                Salah: <span id="wrong-count">0</span> Soal
+                            </div>
+                        </div>
+
+                        <div id="star-rewards" class="text-2xl pt-2">⭐ ⭐ ⭐ ⭐ ⭐</div>
+                        <p id="motivational-msg" class="text-xs font-semibold text-slate-700 italic">"Luar biasa! Kamu memahami gerak manipulatif dengan sangat baik!"</p>
+                    </div>
+
+                    <div class="flex justify-center space-x-3 pt-2">
+                        <button onclick="restartQuiz()" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold px-5 py-2.5 rounded-xl text-sm transition">
+                            <i class="fa-solid fa-rotate-right mr-1"></i> Ulangi Evaluasi
+                        </button>
+                        <button onclick="sendDataToGoogle()" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-6 py-2.5 rounded-xl text-sm shadow transition">
+                            <i class="fa-solid fa-cloud-arrow-up mr-1"></i> Simpan Nilai Ke Google Sheets
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= 8. MENU REFLEKSI ================= -->
+        <section id="page-refleksi" class="page-content hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 card-shadow border-2 border-teal-200 space-y-6">
+                <div class="flex items-center space-x-3 border-b border-slate-100 pb-4">
+                    <div class="bg-teal-500 text-white p-3 rounded-2xl">
+                        <i class="fa-solid fa-face-smile text-2xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-800">Refleksi Belajar Hari Ini</h2>
+                        <p class="text-xs text-slate-500">Ungkapkan perasaan dan pengalaman belajarmu!</p>
+                    </div>
+                </div>
+
+                <div class="space-y-6 max-w-xl mx-auto">
+                    <!-- Q1 -->
+                    <div class="bg-teal-50 p-4 rounded-2xl border border-teal-200 space-y-3">
+                        <label class="block font-bold text-slate-800 text-sm">1. Apakah kamu senang belajar PJOK hari ini?</label>
+                        <div class="flex justify-around">
+                            <button onclick="selectEmojiRefleksi(this, 'senang', 'Sangat Senang')" class="emoji-btn p-3 bg-white rounded-2xl shadow hover:scale-110 transition text-3xl flex flex-col items-center space-y-1">
+                                <span>😍</span>
+                                <span class="text-[10px] font-bold text-slate-600">Suka Banget</span>
+                            </button>
+                            <button onclick="selectEmojiRefleksi(this, 'senang', 'Cukup Senang')" class="emoji-btn p-3 bg-white rounded-2xl shadow hover:scale-110 transition text-3xl flex flex-col items-center space-y-1">
+                                <span>😊</span>
+                                <span class="text-[10px] font-bold text-slate-600">Senang</span>
+                            </button>
+                            <button onclick="selectEmojiRefleksi(this, 'senang', 'Biasa Saja')" class="emoji-btn p-3 bg-white rounded-2xl shadow hover:scale-110 transition text-3xl flex flex-col items-center space-y-1">
+                                <span>😐</span>
+                                <span class="text-[10px] font-bold text-slate-600">Biasa Saja</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div class="bg-amber-50 p-4 rounded-2xl border border-amber-200 space-y-3">
+                        <label class="block font-bold text-slate-800 text-sm">2. Gerakan mana yang paling kamu sukai?</label>
+                        <select id="refleksi-gerak-favorit" class="w-full p-3 rounded-xl border-2 border-amber-300 font-bold text-sm bg-white">
+                            <option value="Melempar Bola">Melempar Bola</option>
+                            <option value="Menangkap Bola">Menangkap Bola</option>
+                            <option value="Menendang Bola">Menendang Bola</option>
+                            <option value="Menggelindingkan Bola">Menggelindingkan Bola</option>
+                        </select>
+                    </div>
+
+                    <!-- Q3 -->
+                    <div class="bg-blue-50 p-4 rounded-2xl border border-blue-200 space-y-3">
+                        <label class="block font-bold text-slate-800 text-sm">3. Apakah kamu berani mencoba gerakan baru bersama teman?</label>
+                        <div class="flex space-x-3">
+                            <button onclick="selectChoiceRefleksi(this, 'berani', 'Sangat Berani')" class="choice-btn flex-1 py-2.5 bg-white border-2 border-blue-300 rounded-xl font-bold text-xs text-blue-700 hover:bg-blue-500 hover:text-white transition">Ya, Sangat Berani! 👍</button>
+                            <button onclick="selectChoiceRefleksi(this, 'berani', 'Masih Agak Takut')" class="choice-btn flex-1 py-2.5 bg-white border-2 border-blue-300 rounded-xl font-bold text-xs text-blue-700 hover:bg-blue-500 hover:text-white transition">Masih Ragu 🤏</button>
+                        </div>
+                    </div>
+
+                    <button onclick="submitRefleksi()" class="w-full bg-teal-500 hover:bg-teal-600 text-white font-bold py-3.5 rounded-2xl shadow transition text-base">
+                        Simpan Refleksi Diri <i class="fa-solid fa-check ml-1"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 9. MENU PENILAIAN GURU ================= -->
+        <section id="page-guru" class="page-content hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 card-shadow border-2 border-indigo-200 space-y-6">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="bg-indigo-500 text-white p-3 rounded-2xl">
+                            <i class="fa-solid fa-clipboard-user text-2xl"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-bold text-slate-800">Panel Penilaian Guru</h2>
+                            <p class="text-xs text-slate-500">Rubrik Asesmen & Rekap Hasil Pembelajaran</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Penilaian Praktik & Sikap oleh Guru -->
+                <div class="bg-indigo-50/50 p-5 rounded-2xl border border-indigo-200 space-y-4">
+                    <h3 class="font-bold text-indigo-900 text-base flex items-center gap-2">
+                        <i class="fa-solid fa-user-check"></i> Input Nilai Unjuk Kerja & Sikap Siswa
+                    </h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <!-- Skor Keterampilan -->
+                        <div class="bg-white p-3 rounded-xl border border-indigo-100 space-y-2">
+                            <label class="block text-xs font-bold text-slate-700">1. Keterampilan Melempar & Menangkap (Skala 1-4):</label>
+                            <select id="score-ket-lempar" class="w-full p-2 rounded-lg border border-slate-300 text-xs font-bold">
+                                <option value="4">4 - Sangat Terampil (Tepat & Seimbang)</option>
+                                <option value="3" selected>3 - Terampil (Sesuai Konsep)</option>
+                                <option value="2">2 - Cukup (Kadang Terlepas)</option>
+                                <option value="1">1 - Perlu Bimbingan Khusus</option>
+                            </select>
+                        </div>
+
+                        <!-- Skor Menendang -->
+                        <div class="bg-white p-3 rounded-xl border border-indigo-100 space-y-2">
+                            <label class="block text-xs font-bold text-slate-700">2. Keterampilan Menendang Target (Skala 1-4):</label>
+                            <select id="score-ket-tendang" class="w-full p-2 rounded-lg border border-slate-300 text-xs font-bold">
+                                <option value="4">4 - Sangat Tepat & Terukur</option>
+                                <option value="3" selected>3 - Tepat Sasaran</option>
+                                <option value="2">2 - Cukup Tepat</option>
+                                <option value="1">1 - Belum Tepat Sasaran</option>
+                            </select>
+                        </div>
+
+                        <!-- Skor Sikap -->
+                        <div class="bg-white p-3 rounded-xl border border-indigo-100 space-y-2">
+                            <label class="block text-xs font-bold text-slate-700">3. Sikap (Disiplin & Kerja Sama):</label>
+                            <select id="score-sikap" class="w-full p-2 rounded-lg border border-slate-300 text-xs font-bold">
+                                <option value="Sangat Baik" selected>Sangat Baik (Mandiri & Sportif)</option>
+                                <option value="Baik">Baik (Bekerja Sama)</option>
+                                <option value="Cukup">Cukup (Perlu Dorongan)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2 pt-2">
+                        <button onclick="saveTeacherAssessment()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-5 py-2.5 rounded-xl text-xs shadow transition">
+                            <i class="fa-solid fa-floppy-disk mr-1"></i> Simpan Penilaian Guru
+                        </button>
+                        <button onclick="generateDocReport()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-5 py-2.5 rounded-xl text-xs shadow transition">
+                            <i class="fa-solid fa-file-word mr-1"></i> Buat Laporan Google Docs
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Rubrik Deskripsi Penilaian -->
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs border-collapse border border-slate-200">
+                        <thead class="bg-indigo-500 text-white">
+                            <tr>
+                                <th class="p-2 border">Aspek Penilaian</th>
+                                <th class="p-2 border">Skor 1 (Perlu Bimbingan)</th>
+                                <th class="p-2 border">Skor 2 (Cukup)</th>
+                                <th class="p-2 border">Skor 3 (Baik)</th>
+                                <th class="p-2 border">Skor 4 (Sangat Baik)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y text-slate-700">
+                            <tr>
+                                <td class="p-2 font-bold border">Melempar & Menangkap</td>
+                                <td class="p-2 border">Belum berani memegang bola</td>
+                                <td class="p-2 border">Arah lemparan melenceng</td>
+                                <td class="p-2 border">Tangan membentuk mangkuk</td>
+                                <td class="p-2 border">Lemparan tepat & tangkapan bersih</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2 font-bold border">Menendang Bola</td>
+                                <td class="p-2 border">Kaki tidak mengenai bola</td>
+                                <td class="p-2 border">Menendang tanpa arah</td>
+                                <td class="p-2 border">Menendang dengan kaki dalam</td>
+                                <td class="p-2 border">Menendang tepat sasaran gawang</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= 10. CONFIGURATION MODAL ================= -->
+        <section id="page-config" class="page-content hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 card-shadow border-2 border-slate-300 space-y-6 max-w-xl mx-auto">
+                <div class="flex items-center space-x-3 border-b border-slate-100 pb-4">
+                    <div class="bg-slate-700 text-white p-3 rounded-2xl">
+                        <i class="fa-solid fa-gear text-2xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-800">Pengaturan Integrasi Google</h2>
+                        <p class="text-xs text-slate-500">Masukkan URL Google Apps Script Web App Guru</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4 text-left">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Web App Deployment URL (Google Apps Script):</label>
+                        <input type="text" id="gas-url-input" placeholder="https://script.google.com/macros/s/.../exec" class="w-full px-4 py-2 rounded-xl border-2 border-slate-300 font-mono text-xs text-slate-800">
+                    </div>
+                    <div class="bg-amber-50 p-3 rounded-xl border border-amber-200 text-[11px] text-amber-900 leading-relaxed">
+                        <p class="font-bold"><i class="fa-solid fa-lightbulb"></i> Cara Penggunaan:</p>
+                        <p>1. Salin kode `Code.gs` yang disediakan ke Google Apps Script.</p>
+                        <p>2. Deploy sebagai **Web App** (Akses: *Anyone/Siapa Saja*).</p>
+                        <p>3. Tempelkan URL Web App tersebut di kolom di atas lalu klik **Simpan Pengaturan**.</p>
+                    </div>
+                    <button onclick="saveGasConfig()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 rounded-xl transition text-sm">
+                        Simpan Pengaturan Koneksi
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-amber-500 text-amber-950 p-3 text-center text-xs font-bold border-t-2 border-amber-600 mt-6">
+        <p>© 2026 SDN 004 Singkep • Media Pembelajaran Interaktif PJOK Kelas 1 SD (Fase A)</p>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        /* ================= STATE MANAGEMENT ================= */
+        let state = {
+            studentName: '',
+            studentClass: '1A',
+            totalStars: 0,
+            gameScore: 0,
+            quizScore: 0,
+            quizCorrect: 0,
+            quizWrong: 0,
+            refleksiData: { senang: 'Sangat Senang', gerak: 'Melempar Bola', berani: 'Sangat Berani' },
+            teacherData: { lempar: 3, tendang: 3, sikap: 'Sangat Baik' },
+            gasUrl: localStorage.getItem('gas_web_app_url') || ''
+        };
+
+        // Audio TTS (Text to Speech)
+        const synth = window.speechSynthesis;
+
+        /* ================= MATERI DATA ================= */
+        const materiList = [
+            {
+                title: "1. Melempar Bola",
+                icon: "fa-paper-plane",
+                desc: "Melempar adalah mengayunkan tangan untuk mendorong bola ke depan atau ke atas sasaran.",
+                steps: [
+                    "Pegang bola dengan erat menggunakan satu atau dua tangan.",
+                    "Tarik tangan ke belakang bahu.",
+                    "Ayunkan tangan ke depan dan lepaskan bola ke arah sasaran."
+                ],
+                dailyExample: "Melempar sampah ke tong sampah atau melempar mainan ke tempatnya.",
+                question: "Saat melempar bola, tangan diayunkan ke arah mana?",
+                options: ["Ke Depan Sasaran", "Ke Belakang", "Ke Bawah"],
+                correctAnswer: 0
+            },
+            {
+                title: "2. Menangkap Bola",
+                icon: "fa-hands-holding",
+                desc: "Menangkap adalah menerima bola yang datang dari teman atau melayang di udara.",
+                steps: [
+                    "Buka kedua telapak tangan membentuk seperti mangkuk besar.",
+                    "Fokuskan mata melihat arah datangnya bola.",
+                    "Tarik sedikit tangan saat bola mengenai telapak tangan agar bola tidak terlepas."
+                ],
+                dailyExample: "Menangkap buah apel yang dipetik ayah dari pohon.",
+                question: "Bentuk telapak tangan saat menangkap bola adalah...",
+                options: ["Mengepal Rapat", "Membentuk Mangkuk Buka", "Menutup Mata"],
+                correctAnswer: 1
+            },
+            {
+                title: "3. Menendang Bola",
+                icon: "fa-futbol",
+                desc: "Menendang adalah mendorong bola menggunakan kaki bagian dalam, luar, atau punggung kaki.",
+                steps: [
+                    "Berdiri di belakang bola.",
+                    "Ayunkan kaki penendang dari belakang ke depan.",
+                    "Sentuhkan kaki ke bagian tengah bola menuju target gawang."
+                ],
+                dailyExample: "Bermain sepak bola mini bersama teman-teman di lapangan.",
+                question: "Anggota tubuh yang digunakan untuk menendang bola adalah...",
+                options: ["Tangan", "Kaki", "Kepala"],
+                correctAnswer: 1
+            },
+            {
+                title: "4. Menggelindingkan Bola",
+                icon: "fa-bowling-ball",
+                desc: "Menggelindingkan adalah mendorong bola agar bergerak bergulir menyusur lantai/tanah.",
+                steps: [
+                    "Bungkukkan badan ke bawah mendekati lantai.",
+                    "Ayunkan tangan rendah sejajar lantai.",
+                    "Dorong bola agar menggelinding lurus ke depan."
+                ],
+                dailyExample: "Bermain permainan bowling atau menggelindingkan kelereng.",
+                question: "Saat menggelindingkan bola, gerakan bola berada di...",
+                options: ["Udara Tinggi", "Menyusur Lantai/Tanah", "Di Atas Kepala"],
+                correctAnswer: 1
+            },
+            {
+                title: "5. Memukul Bola",
+                icon: "fa-baseball-bat-ball",
+                desc: "Memukul adalah mengenai bola yang melayang menggunakan tongkat kayu atau raket.",
+                steps: [
+                    "Pegang tongkat pemukul dengan erat.",
+                    "Fokuskan pandangan mata pada bola.",
+                    "Ayunkan pemukul ke depan tepat mengenai bola."
+                ],
+                dailyExample: "Bermain kasti atau mengayunkan raket nyamuk.",
+                question: "Alat yang digunakan untuk memukul bola pada permainan kasti adalah...",
+                options: ["Sepatu", "Tongkat Pemukul", "Topi"],
+                correctAnswer: 1
+            },
+            {
+                title: "6. Memantulkan Bola",
+                icon: "fa-basketball",
+                desc: "Memantulkan adalah menekan bola ke lantai menggunakan telapak tangan (*Dribble*).",
+                steps: [
+                    "Bungkukkan badan sedikit.",
+                    "Tekan bola ke bawah memakai jari-jari tangan.",
+                    "Ikuti irama pantulan bola menggunakan telapak tangan."
+                ],
+                dailyExample: "Bermain bola basket atau memantulkan bola karet.",
+                question: "Saat memantulkan bola basket, bola ditekan menggunakan...",
+                options: ["Jari & Telapak Tangan", "Sikut Tangan", "Lutut Kaki"],
+                correctAnswer: 0
+            }
+        ];
+
+        /* ================= 10 SOAL EVALUASI ================= */
+        const quizQuestions = [
+            {
+                q: "1. Gerakan olahraga yang menggunakan benda atau bola disebut gerak...",
+                options: ["A. Lokomotor", "B. Manipulatif", "C. Non-lokomotor"],
+                ans: 1,
+                img: "⚽"
+            },
+            {
+                q: "2. Gambar tangan mengayunkan bola ke atas keranjang adalah contoh gerak...",
+                options: ["A. Menendang", "B. Melempar", "C. Memukul"],
+                ans: 1,
+                img: "🎯"
+            },
+            {
+                q: "3. Saat menangkap bola, posisi telapak tangan yang benar adalah...",
+                options: ["A. Membentuk mangkuk", "B. Mengepal rapat", "C. Disembunyikan"],
+                ans: 0,
+                img: "🤲"
+            },
+            {
+                q: "4. Menendang bola dilakukan menggunakan anggota tubuh...",
+                options: ["A. Tangan", "B. Kepala", "C. Kaki"],
+                ans: 2,
+                img: "👟"
+            },
+            {
+                q: "5. Mendorong bola agar bergulir menyusur lantai tanah disebut...",
+                options: ["A. Menggelindingkan", "B. Melompat", "C. Menangkap"],
+                ans: 0,
+                img: "🎳"
+            },
+            {
+                q: "6. Supaya melempar bola tepat sasaran, pandangan mata harus mengarah ke...",
+                options: ["A. Teman di samping", "B. Sasaran / Target", "C. Awan di langit"],
+                ans: 1,
+                img: "👀"
+            },
+            {
+                q: "7. Sebelum melakukan aktivitas praktik gerak fisik, kita harus melakukan...",
+                options: ["A. Tidur siang", "B. Pemanasan otot", "C. Makan kenyang"],
+                ans: 1,
+                img: "🤸"
+            },
+            {
+                q: "8. Sikap yang baik saat bermain bola bersama teman-teman adalah...",
+                options: ["A. Bekerja sama & jujur", "B. Marah saat kalah", "C. Berebut bola sendirian"],
+                ans: 0,
+                img: "🤝"
+            },
+            {
+                q: "9. Alat pemukul kayu biasanya digunakan pada permainan...",
+                options: ["A. Sepak Bola", "B. Kasti", "C. Renang"],
+                ans: 1,
+                img: "🏏"
+            },
+            {
+                q: "10. Memantulkan bola basket ke lantai dilakukan menggunakan...",
+                options: ["A. Telapak tangan", "B. Dahi kepala", "C. Tumit kaki"],
+                ans: 0,
+                img: "🏀"
+            }
+        ];
+
+        let currentMateriIdx = 0;
+        let currentQuizIdx = 0;
+
+        /* ================= INITIALIZATION ================= */
+        window.onload = function() {
+            if (state.gasUrl) {
+                document.getElementById('gas-url-input').value = state.gasUrl;
+            }
+            renderMateri(0);
+            initGame();
+            renderQuiz();
+            initCanvasDemo();
+        };
+
+        /* NAVIGATION LOGIC */
+        function showPage(pageId) {
+            const pages = document.querySelectorAll('.page-content');
+            pages.forEach(p => p.classList.add('hidden'));
+
+            const target = document.getElementById(pageId);
+            if (target) {
+                target.classList.remove('hidden');
+            }
+
+            // Toggle Header Navigation Elements
+            if (pageId === 'page-welcome') {
+                document.getElementById('user-badge').classList.add('hidden');
+                document.getElementById('btn-nav-menu').classList.add('hidden');
+            } else {
+                document.getElementById('user-badge').classList.remove('hidden');
+                document.getElementById('btn-nav-menu').classList.remove('hidden');
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function startLearning() {
+            const nameInput = document.getElementById('input-nama').value.trim();
+            const classInput = document.getElementById('input-kelas').value;
+
+            if (!nameInput) {
+                alert("Isi namamu terlebih dahulu ya!");
+                return;
+            }
+
+            state.studentName = nameInput;
+            state.studentClass = classInput;
+
+            document.getElementById('badge-name').textContent = nameInput;
+            document.getElementById('badge-class').textContent = classInput;
+            document.getElementById('welcome-student-name').textContent = nameInput;
+
+            showPage('page-menu');
+            playAudioText(`Selamat datang ${nameInput} di Petualangan Gerak Manipulatif! Mari belajar dengan gembira.`);
+        }
+
+        /* ================= AUDIO TTS FUNCTION ================= */
+        function playAudioText(text) {
+            if ('speechSynthesis' in window) {
+                synth.cancel(); // Stop ongoing speech
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'id-ID';
+                utterance.rate = 0.9; // Slightly slower for kids
+                synth.speak(utterance);
+            }
+        }
+
+        /* ================= MATERI CONTROLLER ================= */
+        function switchMateri(idx) {
+            currentMateriIdx = idx;
+            const tabs = document.querySelectorAll('.tab-btn');
+            tabs.forEach((tab, i) => {
+                if (i === idx) {
+                    tab.className = "tab-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-500 text-white shadow";
+                } else {
+                    tab.className = "tab-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-600";
+                }
+            });
+            renderMateri(idx);
+        }
+
+        function renderMateri(idx) {
+            const data = materiList[idx];
+            const container = document.getElementById('materi-display-container');
+
+            container.innerHTML = `
+                <div class="bg-gradient-to-r from-emerald-50 to-teal-50 p-6 rounded-3xl border-2 border-emerald-200 space-y-4">
+                    <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-14 h-14 bg-emerald-500 text-white rounded-2xl flex items-center justify-center text-2xl shadow">
+                                <i class="fa-solid ${data.icon}"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-bold text-slate-800">${data.title}</h3>
+                                <p class="text-xs text-slate-600 font-semibold">${data.desc}</p>
+                            </div>
+                        </div>
+                        <button onclick="playAudioText('${data.title}. ${data.desc}')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-xs font-bold shadow flex items-center space-x-2 transition">
+                            <i class="fa-solid fa-volume-high text-base"></i>
+                            <span>Dengarkan Suara</span>
+                        </button>
+                    </div>
+
+                    <!-- Steps -->
+                    <div class="bg-white p-4 rounded-2xl border border-emerald-100 space-y-2">
+                        <h4 class="font-bold text-emerald-900 text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-list-check"></i> Langkah-Langkah Gerakan:
+                        </h4>
+                        <ol class="list-decimal list-inside text-xs text-slate-700 space-y-1 pl-2 font-semibold">
+                            ${data.steps.map(s => `<li>${s}</li>`).join('')}
+                        </ol>
+                    </div>
+
+                    <!-- Daily Example -->
+                    <div class="bg-amber-100/60 p-3 rounded-xl border border-amber-200 text-xs text-amber-900 flex items-center space-x-2">
+                        <i class="fa-solid fa-basket-shopping text-amber-600 text-lg"></i>
+                        <span><strong>Contoh Sehari-hari:</strong> ${data.dailyExample}</span>
+                    </div>
+
+                    <!-- Mini Check Question -->
+                    <div class="bg-white p-4 rounded-2xl border-2 border-emerald-300 space-y-3">
+                        <h4 class="font-bold text-xs text-slate-700">🔍 Mini Kuis Pemahaman:</h4>
+                        <p class="text-xs font-bold text-emerald-900">${data.question}</p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                            ${data.options.map((opt, i) => `
+                                <button onclick="checkMateriMiniAnswer(${idx}, ${i})" class="p-2.5 rounded-xl border-2 border-emerald-200 text-xs font-bold hover:bg-emerald-500 hover:text-white transition">
+                                    ${opt}
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function checkMateriMiniAnswer(materiIdx, chosenOptIdx) {
+            const data = materiList[materiIdx];
+            if (chosenOptIdx === data.correctAnswer) {
+                alert("🎉 Benar sekali! Kamu hebat!");
+                addStar(1);
+            } else {
+                alert("❌ Masih kurang tepat, coba baca langkah gerakannya lagi ya!");
+            }
+        }
+
+        function addStar(count) {
+            state.totalStars += count;
+            document.getElementById('total-stars-display').textContent = `⭐ ${state.totalStars}`;
+        }
+
+        /* ================= GAME EDUKASI ================= */
+        const gameItems = [
+            { name: "Melempar Bola", emoji: "🎯", hint: "Mengayun tangan ke depan sasaran" },
+            { name: "Menangkap Bola", emoji: "🤲", hint: "Menerima bola dengan dua tangan" },
+            { name: "Menendang Bola", emoji: "⚽", hint: "Mendorong bola pakai kaki" },
+            { name: "Menggelindingkan Bola", emoji: "🎳", hint: "Menyusur lantai menuju target" }
+        ];
+
+        let currentGameIdx = 0;
+
+        function initGame() {
+            renderGame();
+        }
+
+        function renderGame() {
+            const item = gameItems[currentGameIdx];
+            const container = document.getElementById('game-container');
+
+            container.innerHTML = `
+                <div class="text-4xl animate-bounce mb-2">${item.emoji}</div>
+                <h3 class="text-xl font-bold text-slate-800">Tebak! Gambar Di Atas Adalah Gerakan...</h3>
+                <p class="text-xs text-slate-500 italic">Petunjuk: "${item.hint}"</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-md mx-auto pt-4">
+                    ${gameItems.map((g, idx) => `
+                        <button onclick="guessGame(${idx})" class="p-3 bg-white border-2 border-pink-300 rounded-2xl font-bold text-slate-800 text-sm hover:bg-pink-500 hover:text-white transition shadow-sm">
+                            ${g.name}
+                        </button>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function guessGame(idx) {
+            if (idx === currentGameIdx) {
+                alert("⭐ JAWABAN BENAR! (+10 Bintang)");
+                state.gameScore += 10;
+                addStar(2);
+                document.getElementById('game-score').textContent = state.gameScore;
+                currentGameIdx = (currentGameIdx + 1) % gameItems.length;
+                renderGame();
+            } else {
+                alert("😅 Ups, coba tebak lagi ya!");
+            }
+        }
+
+        /* ================= EVALUASI KUIS ================= */
+        function renderQuiz() {
+            if (currentQuizIdx >= quizQuestions.length) {
+                showQuizResult();
+                return;
+            }
+
+            const q = quizQuestions[currentQuizIdx];
+            document.getElementById('quiz-current-num').textContent = currentQuizIdx + 1;
+
+            const container = document.getElementById('quiz-box');
+            container.innerHTML = `
+                <div class="bg-red-50/60 p-6 rounded-3xl border-2 border-red-200 text-center space-y-4">
+                    <div class="text-5xl mb-2">${q.img}</div>
+                    <h3 class="text-base md:text-lg font-bold text-slate-800">${q.q}</h3>
+                    <div class="grid grid-cols-1 gap-3 max-w-lg mx-auto pt-2">
+                        ${q.options.map((opt, i) => `
+                            <button onclick="submitQuizAnswer(${i})" class="p-3.5 bg-white border-2 border-red-200 rounded-2xl font-bold text-slate-800 text-sm hover:bg-red-500 hover:text-white transition text-left px-5 flex items-center space-x-3 shadow-sm">
+                                <span class="w-6 h-6 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-xs font-black">${String.fromCharCode(65+i)}</span>
+                                <span>${opt}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function submitQuizAnswer(chosenIdx) {
+            const q = quizQuestions[currentQuizIdx];
+            if (chosenIdx === q.ans) {
+                state.quizCorrect++;
+            } else {
+                state.quizWrong++;
+            }
+            currentQuizIdx++;
+            renderQuiz();
+        }
+
+        function showQuizResult() {
+            document.getElementById('quiz-box').classList.add('hidden');
+            document.getElementById('quiz-progress-badge').classList.add('hidden');
+            document.getElementById('quiz-result').classList.remove('hidden');
+
+            const score = (state.quizCorrect / quizQuestions.length) * 100;
+            state.quizScore = score;
+            document.getElementById('final-score-val').textContent = Math.round(score);
+            document.getElementById('correct-count').textContent = state.quizCorrect;
+            document.getElementById('wrong-count').textContent = state.quizWrong;
+
+            addStar(Math.round(score / 20));
+        }
+
+        function restartQuiz() {
+            currentQuizIdx = 0;
+            state.quizCorrect = 0;
+            state.quizWrong = 0;
+            document.getElementById('quiz-box').classList.remove('hidden');
+            document.getElementById('quiz-progress-badge').classList.remove('hidden');
+            document.getElementById('quiz-result').classList.add('hidden');
+            renderQuiz();
+        }
+
+        /* ================= REFLEKSI & GURU ================= */
+        function selectEmojiRefleksi(btn, key, val) {
+            state.refleksiData[key] = val;
+            const parent = btn.parentElement;
+            parent.querySelectorAll('.emoji-btn').forEach(b => b.classList.remove('border-2', 'border-teal-500', 'bg-teal-100'));
+            btn.classList.add('border-2', 'border-teal-500', 'bg-teal-100');
+        }
+
+        function selectChoiceRefleksi(btn, key, val) {
+            state.refleksiData[key] = val;
+            const parent = btn.parentElement;
+            parent.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('bg-blue-500', 'text-white'));
+            btn.classList.add('bg-blue-500', 'text-white');
+        }
+
+        function submitRefleksi() {
+            state.refleksiData.gerak = document.getElementById('refleksi-gerak-favorit').value;
+            alert("✨ Refleksi belajarmu telah tersimpan! Terima kasih anak pintar.");
+            showPage('page-menu');
+        }
+
+        function saveTeacherAssessment() {
+            state.teacherData.lempar = document.getElementById('score-ket-lempar').value;
+            state.teacherData.tendang = document.getElementById('score-ket-tendang').value;
+            state.teacherData.sikap = document.getElementById('score-sikap').value;
+            alert("💾 Penilaian Unjuk Kerja & Sikap Guru Berhasil Disimpan!");
+        }
+
+        /* ================= GOOGLE INTEGRATION (GAS) ================= */
+        function saveGasConfig() {
+            const url = document.getElementById('gas-url-input').value.trim();
+            if (!url) {
+                alert("Masukkan URL Web App terlebih dahulu!");
+                return;
+            }
+            state.gasUrl = url;
+            localStorage.setItem('gas_web_app_url', url);
+            alert("✅ URL Integrasi Google Apps Script Berhasil Disimpan!");
+            showPage('page-menu');
+        }
+
+        function sendDataToGoogle() {
+            if (!state.gasUrl) {
+                alert("⚠️ URL Google Apps Script belum diatur! Buka menu Pengaturan (ikon roda gigi) terlebih dahulu.");
+                showPage('page-config');
+                return;
+            }
+
+            const payload = {
+                action: 'save_score',
+                nama: state.studentName || 'Siswa 1',
+                kelas: state.studentClass || '1A',
+                tanggal: new Date().toLocaleDateString('id-ID'),
+                skorEvaluasi: state.quizScore,
+                benar: state.quizCorrect,
+                salah: state.quizWrong,
+                refleksi: JSON.stringify(state.refleksiData),
+                nilaiPraktik: state.teacherData.lempar,
+                nilaiSikap: state.teacherData.sikap
+            };
+
+            fetch(state.gasUrl, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            })
+            .then(() => {
+                alert("🚀 Data Nilai & Evaluasi Berhasil Dikirim ke Google Sheets!");
+            })
+            .catch(err => {
+                alert("❌ Gagal mengirim data. Periksa koneksi internet!");
+                console.error(err);
+            });
+        }
+
+        function generateDocReport() {
+            if (!state.gasUrl) {
+                alert("⚠️ URL Google Apps Script belum diatur! Buka menu Pengaturan (ikon roda gigi).");
+                showPage('page-config');
+                return;
+            }
+
+            const payload = {
+                action: 'create_doc_report',
+                nama: state.studentName || 'Siswa 1',
+                kelas: state.studentClass || '1A',
+                skorEvaluasi: state.quizScore,
+                refleksi: JSON.stringify(state.refleksiData),
+                nilaiPraktik: state.teacherData.lempar,
+                nilaiSikap: state.teacherData.sikap
+            };
+
+            fetch(state.gasUrl, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            })
+            .then(() => {
+                alert("📄 Permintaan Pembuatan Laporan Google Docs Berhasil Dikirim ke Google Drive Guru!");
+            })
+            .catch(err => alert("Gagal koneksi server!"));
+        }
+
+        /* ================= CANVAS DEMONSTRATION SIMULATOR ================= */
+        let canvas, ctx;
+        let demoState = { type: 'melempar', isPlaying: false, frame: 0 };
+
+        function initCanvasDemo() {
+            canvas = document.getElementById('demo-canvas');
+            if (canvas) {
+                ctx = canvas.getContext('2d');
+                drawDemoFrame();
+            }
+        }
+
+        function loadDemoVideo(type) {
+            demoState.type = type;
+            demoState.frame = 0;
+            document.getElementById('demo-video-title').innerHTML = `<i class="fa-solid fa-video text-purple-400 mr-2"></i> Animasi Demonstrasi: ${type.toUpperCase()}`;
+            drawDemoFrame();
+        }
+
+        function playCanvasDemo() {
+            demoState.isPlaying = true;
+            animateCanvas();
+        }
+
+        function pauseCanvasDemo() {
+            demoState.isPlaying = false;
+        }
+
+        function resetCanvasDemo() {
+            demoState.isPlaying = false;
+            demoState.frame = 0;
+            drawDemoFrame();
+        }
+
+        function animateCanvas() {
+            if (!demoState.isPlaying) return;
+            demoState.frame += 2;
+            if (demoState.frame > 200) demoState.frame = 0;
+            drawDemoFrame();
+            requestAnimationFrame(animateCanvas);
+        }
+
+        function drawDemoFrame() {
+            if (!ctx) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Ground & Sky
+            ctx.fillStyle = "#81D4FA";
+            ctx.fillRect(0, 0, canvas.width, 240);
+            ctx.fillStyle = "#A5D6A7";
+            ctx.fillRect(0, 240, canvas.width, 80);
+
+            // Stick Figure Character
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = "#37474F";
+
+            // Head
+            ctx.beginPath();
+            ctx.arc(150, 140, 20, 0, Math.PI * 2);
+            ctx.stroke();
+
+            // Body
+            ctx.beginPath();
+            ctx.moveTo(150, 160);
+            ctx.lineTo(150, 220);
+            ctx.stroke();
+
+            // Legs
+            ctx.beginPath();
+            ctx.moveTo(150, 220);
+            ctx.lineTo(130, 270);
+            ctx.moveTo(150, 220);
+            ctx.lineTo(170, 270);
+            ctx.stroke();
+
+            // Ball Position based on type & frame
+            let ballX = 170 + (demoState.frame * 1.5);
+            let ballY = 160 - Math.sin(demoState.frame * 0.03) * 40;
+
+            if (demoState.type === 'melempar') {
+                // Arm throwing
+                ctx.beginPath();
+                ctx.moveTo(150, 170);
+                ctx.lineTo(170, 150);
+                ctx.stroke();
+            } else if (demoState.type === 'menangkap') {
+                ballX = 400 - (demoState.frame * 1.2);
+                ballY = 160;
+                // Arms receiving
+                ctx.beginPath();
+                ctx.moveTo(150, 170);
+                ctx.lineTo(180, 160);
+                ctx.stroke();
+            } else if (demoState.type === 'menendang') {
+                ballY = 245;
+                // Leg kicking
+                ctx.beginPath();
+                ctx.moveTo(150, 220);
+                ctx.lineTo(170 + Math.sin(demoState.frame * 0.05) * 20, 250);
+                ctx.stroke();
+            }
+
+            // Draw Red Ball
+            ctx.fillStyle = "#E53935";
+            ctx.beginPath();
+            ctx.arc(Math.min(ballX, 550), Math.max(ballY, 50), 12, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    </script>
+</body>
+</html>
